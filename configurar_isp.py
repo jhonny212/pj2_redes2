@@ -14,6 +14,11 @@ def ejecutar_command(comando):
 ISP_UP = f"ip addr add 10.10.10.1/24 dev {commands.INTERFACE_IN}"
 ISP_DOWN = f"ip addr add 10.10.10.2/24 dev {commands.INTERFACE_OUT}"
 
+#limpiar
+ejecutar_command(commands.C2)
+ejecutar_command(commands.C3)
+ejecutar_command(commands.C4)
+
 ejecutar_command(ISP_UP)
 ejecutar_command(ISP_DOWN)
 ejecutar_command(commands.C1)
@@ -22,6 +27,7 @@ ejecutar_command(commands.C3)
 ejecutar_command(commands.C4)
 ejecutar_command(commands.C5)
 ejecutar_command(commands.C6)
+ejecutar_command(commands.IFB)
 ejecutar_command(commands.COMANDO_IN_ROOT)
 ejecutar_command(commands.COMANDO_IN_ENLACE)
 ejecutar_command(commands.COMANDO_OUT_ROOT)
