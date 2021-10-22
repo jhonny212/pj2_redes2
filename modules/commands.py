@@ -11,7 +11,7 @@ REGLA="0xffff flowid"
 
 #insertar modulo ifb, asignando el numero de interfacez virtuales 
 # que se necesita por defecto es 2
-IFB = "modprobe ifb numifbs=1"
+IFB = "sudo modprobe ifb numifbs=1"
 
 #hablitar interfaz para upload
 C1 = f"ip link set dev {INTERFACE_OUT} up"
@@ -19,8 +19,7 @@ C2 = f"/usr/sbin/tc  qdisc del dev {INTERFACE_IN} root 2>/dev/null"
 C3 = f"/usr/sbin/tc  qdisc del dev {INTERFACE_IN} ingress 2>/dev/null"
 C4 = f"/usr/sbin/tc  qdisc del dev {INTERFACE_OUT} root 2>/dev/null"
 C5 = f"/usr/sbin/tc  qdisc add dev {INTERFACE_IN} handle ffff: ingress"
-C6 = f"""/usr/sbin/tc  filter add dev {INTERFACE_IN} parent ffff: protocol ip u32 match u32 0 0 
-action mirred egress redirect dev {INTERFACE_OUT}"""
+C6 = f"""/usr/sbin/tc  filter add dev {INTERFACE_IN} parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev {INTERFACE_OUT}"""
 
 #creando enlance para bajada
 COMANDO_IN_ROOT = f"/usr/sbin/tc  qdisc add dev {INTERFACE_IN} root handle 1: htb"
@@ -32,5 +31,5 @@ COMANDO_OUT_ENLACE = f"/usr/sbin/tc  class add dev {INTERFACE_OUT} parent 1: cla
 
 
 #asignano ip a enlace
-DOWNLOAD = f"{IN} {IP} {PUERTO} 3128 {REGLA} 1:11"
+DOWNLOAD = f"{IN} {IP} flowid 1:11"
 UPLOAD = f"{OUT} {IP} flowid 1:11"
