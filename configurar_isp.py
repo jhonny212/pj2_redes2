@@ -1,10 +1,12 @@
 from os import system
-from .modules import commands
+from modules import commands
 
 #funciones
 def ejecutar_command(comando):
     try:
+        print("Ejecutando... ",comando)
         system(comando)
+        print("\n")
     except:
         print("Error")
 
