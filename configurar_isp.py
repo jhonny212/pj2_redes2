@@ -1,5 +1,5 @@
 from os import system
-from . import commands
+from .modules import commands
 
 #funciones
 def ejecutar_command(comando):
