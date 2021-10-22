@@ -1,0 +1,77 @@
+------------------------------------------------------------
+DOS ISP
+ISP1{
+    DW: 1mbps
+    UP: 1mbps
+}
+ISP2{
+    DW:2Mbps,
+    UP:512kbps
+}
+se debe tener una app que monitoree el consumo de internet (graficador)
+Para los ISP usar sistemas operativos debian
+el ancho de banda no es estatico, puede ser modificado
+-------------------------------------------------------------
+Balanceo de carga (debian):
+*Se conecta a los dos isp
+*Se conecta a filtro de navegacion
+*la lan depende del balanceador, lan->balanceo->acceso a internet
+*gateway de salida de los clientes
+
+archivos para balanceo:
+pesos.txt{
+    ISP1=2
+    ISP2=8
+Ejemplo: 10 paquetes,
+    2 paquetes se van por isp1 y 8 por isp2, en este caso el isp2 tiene mas carga
+    debido a esto el balanceador debe dar 8 a isp1 y 2 a isp2 (depende del ancho de banda como
+    asignar)
+    *depende del proceso, si es de descarga hay que balancear en base el down,
+    si es de subida balancear respecto al upload
+    la proporcion se mantiene x y 2x 0:17
+}
+reglas de balanceo:
+LBrules.txt{
+    <ip fuente>,<puerto destino>,protocolo,<salida>
+
+    <salida>{
+        puede tener ISP1,ISP2, o LB
+    }
+    al especificar una salida se fuerza, es decir se fuerza a que se vaya con ISPX, mientras
+    sea LB se va al balanceo de carga (pesos)
+    <puerto>{
+        <puerto> o <puerto>-<puerto>
+    }
+}
+
+FailOver{
+    Script:{
+        controla las fallas sobre ambos enlaces, chequea y si uno falla
+        cambia los pesos del balanceo de carga, se setea a 0,
+        si en dado caso en la salida de LBrules se tiene una salida forzada
+        y esa salida no funciona se redirecciona al otro proveedor
+    }
+}
+chinga tu madre rojassssssss
+
+----------------------------------------------------------------------------
+filtro de navegacion{
+    *los clientes se conectan aca
+    *se construye a partir de un squid con capacidad https transparente
+    *lo que hace es restrigir paginas pero a nivel de navegacion no de aplicacion
+    *no modifica el navegador
+    *modo de escucha puente (actua como switch)
+    *hace chequeo y deja pasar paquetes
+}
+---------------------------------------------------------------------------
+2 clientes en modo grafico
+el resto en modo texto
+
+
+------------------------
+buenas noches ingeniero, estuvimos hablando entre los compañeros 
+y llegamos a la misma conclusion de que no surge problemas de espacio
+en el disco duro, ya que estamos virtualizando muchas maquinas y no podemos 
+y unos compañeros como mi persona no tenemos mas espacio asi que nos gustaria solicitar
+si el proyecto de sistemas operativos se pueda realizar en parejas asi
+optimizar espacio
