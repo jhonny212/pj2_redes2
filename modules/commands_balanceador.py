@@ -21,10 +21,10 @@ SUBRE2 = '255.255.255.0'
 PATH_ROUTES = '/etc/iproute2/rt_tables'
 
 #Rutas de encaminamiento
-R1 = f'ip route add default via {GTW1} dev table T0'
+R1 = f'ip route add default dev {INTERFAZ_DOWNLOAD_ISP1} via {GTW1} dev table T0'
 R2 = f'ip route add {SUBRE1} dev {INTERFAZ_DOWNLOAD_ISP1} src {IP_DOWNLOAD_ISP1} table T0'
 
-R3 = f'ip route add default via {GTW2} dev table T1'
+R3 = f'ip route add default dev {INTERFAZ_DOWNLOAD_ISP2} via {GTW2} dev table T1'
 R4 = f'ip route add {SUBRE2} dev {INTERFAZ_DOWNLOAD_ISP2} src {IP_DOWNLOAD_ISP2} table T1'
 
 #Reglas de encaminamiento
