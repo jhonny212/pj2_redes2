@@ -15,8 +15,8 @@ GTW1 = '10.10.10.1'
 GTW2 = '20.20.20.1'
 
 #Subred
-SUBRE1 = '255.255.255.0'
-SUBRE2 = '255.255.255.0'
+SUBRE1 = '10.10.10.0'
+SUBRE2 = '20.20.20.0'
 
 PATH_ROUTES = '/etc/iproute2/rt_tables'
 
