@@ -22,7 +22,7 @@ C4 = f"/usr/sbin/tc  qdisc del dev {INTERFACE_OUT} root 2>/dev/null"
 
 #hablitar interfaz para upload
 C5 = f"/usr/sbin/tc  qdisc add dev {INTERFACE_IN} handle ffff: ingress"
-C6 = f"""/usr/sbin/tc  filter add dev {INTERFACE_IN} parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev {INTERFACE_OUT}"""
+C6 = f"/usr/sbin/tc  filter add dev {INTERFACE_IN} parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev {INTERFACE_OUT}"
 
 #creando enlance para bajada
 COMANDO_IN_ROOT = f"/usr/sbin/tc  qdisc add dev {INTERFACE_IN} root handle 1: htb"
