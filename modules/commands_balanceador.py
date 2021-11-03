@@ -1,40 +1,24 @@
-#interfacez
-INTERFAZ_DOWNLOAD_ISP1 = 'enp1s0'
-INTERFAZ_DOWNLOAD_ISP2 = 'enp7s0'
-INTERFAZ_UPLOAD_ISP1 = 'ibf0'
-INTERFAZ_UPLOAD_ISP2 = 'ibf1'
-
-#ips
-IP_DOWNLOAD_ISP1 = '10.10.10.3'
-IP_DOWNLOAD_ISP2 = '20.20.20.3'
-IP_UPLOAD_ISP1 = ''
-IP_UPLOAD_ISP2 = ''
-
-#GTW
-GTW1 = '10.10.10.1'
-GTW2 = '20.20.20.1'
-
-#Subred
-SUBRE1 = '10.10.10.0/24'
-SUBRE2 = '20.20.20.0/24'
-
 PATH_ROUTES = '/etc/iproute2/rt_tables'
 
-#Rutas de encaminamiento
-R2 = f'ip route add default dev {INTERFAZ_DOWNLOAD_ISP1} via {GTW1} table T0'
-R1 = f'ip route add {SUBRE1} dev {INTERFAZ_DOWNLOAD_ISP1} src {IP_DOWNLOAD_ISP1} table T0'
+#tabla de enrutamiento
+C1 = "ip route add 10.10.10.0/24 dev enp7s0 src 10.10.10.3 table T0"
+C2 = "ip route add default via 10.10.10.1 table T0"
 
-R4 = f'ip route add default dev {INTERFAZ_DOWNLOAD_ISP2} via {GTW2} table T1'
-R3 = f'ip route add {SUBRE2} dev {INTERFAZ_DOWNLOAD_ISP2} src {IP_DOWNLOAD_ISP2} table T1'
+C3 = "ip route add 10.10.20.0/24 dev enp7s0 src 10.10.20.3 table T1"
+C4 = "ip route add default via 10.10.20.1 table T1"
 
-#Reglas de encaminamiento
-R5 = f'ip rule add from {IP_DOWNLOAD_ISP1}/32 table T0'
-R6 = f'ip rule add to {IP_DOWNLOAD_ISP1}/32 table T0'
+#IPTABLES
+C5 = "iptables -t mangle -A PREROUTING -j CONNMARK --restore-mark"
+C6 = "iptables -t mangle -A PREROUTING -m mark ! --mark 0 -j ACCEPT"
+C7 = "iptables -t mangle -A PREROUTING -j MARK --set-mark 3"
+C8 = ""
+C9 = "iptables -t mangle -A PREROUTING -j CONNMARK --save-mark"
+C10 = "iptables -t nat -A POSTROUTING -j MASQUERADE"
+C11 = "ip rule add fwmark 3 table T0 prio 33000"
+C12 = "ip rule add fwmark 4 table T1 prio 33000"
+C13 = "ip route del default"
 
-R7 = f'ip rule add from {IP_DOWNLOAD_ISP2}/32 table T1'
-R8 = f'ip rule add to {IP_DOWNLOAD_ISP2}/32 table T1'
-
-#Configuracion de pesos
-P1 = f'ip route add default scope global nexthop via '
-P1+= f'{GTW1} dev {INTERFAZ_DOWNLOAD_ISP1} weight 1 nexthop via '
-P1+= f'{GTW2} dev {INTERFAZ_DOWNLOAD_ISP2} weight 1'
+def get_percentage(total,enp7s0):
+    global C8
+    perc = 1-(total/enp7s0)
+    C8 = f"iptables -t mangle -A PREROUTING -m statistic --mode random --probability {perc} -j MARK --set-mark 4"

@@ -14,8 +14,7 @@ C3 = "http_access deny all"
 
 """
 acl https port 443
-http_access allow https
-"""
+http_access allow https"""
 
 IPTABLES1 = "iptables -t nat -A PREROUTING -p tcp -s 172.27.1.0/24 --dport 80 -j REDIRECT --to-port 3128"
 IPTABLES2 = "iptables -t nat -A PREROUTING -p tcp -s 172.27.1.0/24 --dport 443 -j REDIRECT --to-port 3128"
